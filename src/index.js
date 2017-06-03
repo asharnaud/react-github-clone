@@ -62,20 +62,20 @@ function Header (props) {
 }
 
 function Body (props) {
-  return <div className="body">
-          <img src={props.avatar_url}></img>
-          <p>{props.name}</p>
-          <p>{props.location}</p>
-          <p>Following {props.following} Followers {props.followers}</p>
-          <p>{props.bio}</p>
+  return <div className="body featurette" id="services">
+            <img className="featurette-image img-circle img-responsive pull-left" src={props.avatar_url}></img>
+            <h2 className="featurette-heading">{props.name}</h2>
+            <p className="lead">{props.location}</p>
+            <p className="lead">Following- {props.following} Followers- {props.followers}</p>
+            <p className="lead">{props.bio}</p>
         </div>
 }
 
 function Footer (props) {
   return <div className="footer">
-          <p>github: {props.url}</p>
-          <p>email: {props.email}</p>
-          <p>blog: {props.blog}</p>
+          <a href={props.url}>github</a>
+          <a href={props.email}>email</a>
+          <a href={props.blog}>blog</a>
         </div>
 }
 
