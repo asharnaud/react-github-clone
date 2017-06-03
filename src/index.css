@@ -33,7 +33,7 @@ body {
   background-color: #2b2a2a;
   color: white;
   font-size: 14px;
-  font-family: 'Garamond';
+  font-family: sans-serif;
   margin-top: 300px;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -48,7 +48,7 @@ body {
   color: white;
 }
 
-.lead {
+.feature-paragraph {
   margin-bottom: 20px;
   font-size: 18px;
   font-weight: 300;
@@ -56,12 +56,7 @@ body {
   text-align: center;
 }
 
-.featurette-image .pull-right {
-    margin-left: 40px;
-    margin-left: 20px;
-}
-
-.body .featurette-heading {
+.body .feature-heading {
   font-size: 50px;
   margin-top: 50px;
   text-align: center;
@@ -70,14 +65,26 @@ body {
 
 .img-circle {
   border-radius: 50%;
-}
-
-.img-responsive {
   display: block;
   max-width: 100%;
+  margin-left: 10px;
   height: auto;
+  float: left;
 }
 
-.body .pull-left {
-  float: left;
+.search {
+  font-size: 14px;
+  font-family: sans-serif;
+  font-weight: 300;
+  line-height: 1.4;
+  margin-right: 5px;
+}
+
+.search label {
+  margin-left: 300px;
+  padding: 5px;
+}
+
+.search .user-input {
+  margin-left: 5px;
 }

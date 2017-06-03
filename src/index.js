@@ -62,12 +62,25 @@ function Header (props) {
 }
 
 function Body (props) {
-  return <div className="body featurette" id="services">
-            <img className="featurette-image img-circle img-responsive pull-left" src={props.avatar_url}></img>
-            <h2 className="featurette-heading">{props.name}</h2>
-            <p className="lead">{props.location}</p>
-            <p className="lead">Following- {props.following} Followers- {props.followers}</p>
-            <p className="lead">{props.bio}</p>
+  return <div className="body">
+            <img className="img-circle" src={props.avatar_url}></img>
+            <h2 className="feature-heading">{props.name}</h2>
+            <p className="feature-paragraph">{props.location}</p>
+            <p className="feature-paragraph">Following: {props.following} Followers: {props.followers}</p>
+            <p className="feature-paragraph">{props.bio}</p>
+            {SearchBar(props)}
+        </div>
+}
+
+function SearchBar (props) {
+  return <div className="search">
+          <form>
+            <label>
+              Username
+              <input className="user-input" type="text" name="username" />
+            </label>
+            <input type="submit" value="Submit" />
+          </form>
         </div>
 }
 
