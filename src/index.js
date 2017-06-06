@@ -16,13 +16,19 @@ function gitHubInfo (user) {
     if (request.status >= 200 && request.status < 400) {
       appState.userdata = JSON.parse(request.responseText);
       appState.user = user
+      appState.isLoading = false
       renderNow()
     } else {
-      console.log('The user information was not retrieved.')
+      appState.isLoading = false
+      appState.userData = null
+      renderNow()
     }
   };
 
   request.onerror = function() {
+    appState.isLoading = false
+    appState.userData = null
+    renderNow()
   };
   request.send();
 }
@@ -30,7 +36,7 @@ function gitHubInfo (user) {
 gitHubInfo('asharnaud')
 
 const initialState = {
-  isLoading: false,
+  isLoading: true,
   userdata: {},
   user: ''
 }
@@ -54,14 +60,23 @@ function Header (props) {
 }
 
 function Body (props) {
-  return <div className="body">
+  if (props.userData === null) {
+    return (
+      <div className='body'>
+        <img className="error-img" src='https://cdn.meme.am/cache/instances/folder204/500x/78118204/stop-like-man-dont-freak-out-just-reload-try-another-user.jpg'alt="error meme"/>
+      </div>
+    )
+  }
+  return (
+    <div className="body">
             <img className="img-circle" src={props.userdata.avatar_url} alt="user profile"></img>
             <h2 className="feature-heading">{props.userdata.name}</h2>
             <p className="feature-paragraph">{props.userdata.location}</p>
             <p className="feature-paragraph">Following: {props.userdata.following} Followers: {props.userdata.followers}</p>
             <p className="feature-paragraph">{props.userdata.bio}</p>
             {SearchUser(props)}
-        </div>
+    </div>
+  )
 }
 
 function pressEnterFn (key) {
