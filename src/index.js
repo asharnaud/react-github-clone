@@ -71,11 +71,13 @@ function Body (props) {
   return (
     <div className="body">
             <img className="img-circle" src={props.userdata.avatar_url} alt="user profile"></img>
-            <h2 className="feature-heading">{props.userdata.name}</h2>
-            <p className="feature-paragraph">{props.userdata.location}</p>
-            <p className="feature-paragraph">Following: {props.userdata.following} Followers: {props.userdata.followers}</p>
-            <p className="feature-paragraph">{props.userdata.bio}</p>
-            {SearchUser(props)}
+            <div className="body-wrapper">
+              <h2 className="feature-heading">{props.userdata.name}</h2>
+              <p className="feature-paragraph">{props.userdata.location}</p>
+              <p className="feature-paragraph">Following: {props.userdata.following} Followers: {props.userdata.followers}</p>
+              <p className="feature-paragraph">{props.userdata.bio}</p>
+              {SearchUser(props)}
+          </div>
     </div>
   )
 }

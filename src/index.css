@@ -64,6 +64,11 @@ body {
   color: #2b2a2a;
 }
 
+.body-wrapper {
+  width: 100%;
+  text-align: center;
+}
+
 .img-circle {
   border-radius: 50%;
   display: block;
@@ -78,9 +83,6 @@ body {
   font-family: sans-serif;
   font-weight: 300;
   line-height: 1.4;
-  width: 696px;
-  margin-left: 800px;
-  margin-top: 50px;
 }
 
 .search label {
