@@ -2,49 +2,42 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import './App.css';
-// import JSON from './ash.json'
 import token from './_token.js'
-// let myOBJ = JSON
-// console.log(myOBJ);
-let myOBJ = ''
 
-function gitHubInfo () {
+function gitHubInfo (user) {
   const githubToken = 'access_token='+ token
   const githubUrl = 'https://api.github.com/users/'
-  const userName = 'asharnaud'
+  const userName = user
   const url = githubUrl + userName + '?' + githubToken
   let request = new XMLHttpRequest();
   request.open('GET', url, true);
 
   request.onload = function() {
     if (request.status >= 200 && request.status < 400) {
-      // Success!
-      myOBJ = JSON.parse(request.responseText);
+      appState.userdata = JSON.parse(request.responseText);
+      appState.user = user
       renderNow()
     } else {
-      // We reached our target server, but it returned an error
       console.log('The user information was not retrieved.')
     }
   };
 
   request.onerror = function() {
-    // There was a connection error of some sort
   };
   request.send();
 }
 
-gitHubInfo()
+gitHubInfo('asharnaud')
 
 const initialState = {
-  isLoading: true,
-  username: '',
-  userdata: {}
+  isLoading: false,
+  userdata: {},
+  user: ''
 }
 
 let appState = initialState
 
 function App (props) {
-  // console.log(props)
   return (
         <div>
           {Header(props)}
@@ -55,43 +48,50 @@ function App (props) {
 }
 
 function Header (props) {
-  console.log(props)
   return <div className="header">
-          <p> <img src="http://octodex.github.com/images/stormtroopocat.png"></img>Github Clone</p>
+          <p> <img src="http://octodex.github.com/images/stormtroopocat.png" alt="octocat"></img>Github Clone</p>
         </div>
 }
 
 function Body (props) {
   return <div className="body">
-            <img className="img-circle" src={props.avatar_url}></img>
-            <h2 className="feature-heading">{props.name}</h2>
-            <p className="feature-paragraph">{props.location}</p>
-            <p className="feature-paragraph">Following: {props.following} Followers: {props.followers}</p>
-            <p className="feature-paragraph">{props.bio}</p>
-            {SearchBar(props)}
+            <img className="img-circle" src={props.userdata.avatar_url} alt="user profile"></img>
+            <h2 className="feature-heading">{props.userdata.name}</h2>
+            <p className="feature-paragraph">{props.userdata.location}</p>
+            <p className="feature-paragraph">Following: {props.userdata.following} Followers: {props.userdata.followers}</p>
+            <p className="feature-paragraph">{props.userdata.bio}</p>
+            {SearchUser(props)}
         </div>
 }
 
-function SearchBar (props) {
-  return <div className="search">
-          <form>
-            <label>
-              Username
-              <input className="user-input" type="text" name="username" />
-            </label>
-            <input type="submit" value="Submit" />
-          </form>
-        </div>
+function searchInput (evt) {
+  appState.user = evt.target.value
+}
+
+function clickSearchBtn () {
+  gitHubInfo(appState.user)
+}
+
+function SearchUser (props) {
+  return (
+    <div className="search">
+      Username
+      <input className="user-input" type="text"  onChange={searchInput} name="username" />
+      <button onClick={clickSearchBtn}>Search</button>
+    </div>
+  )
 }
 
 function Footer (props) {
   return <div className="footer">
-          <a href={props.url}>github</a>
-          <a href={props.email}>email</a>
-          <a href={props.blog}>blog</a>
+          <a href={props.userdata.url}>github</a>
+          <a href={props.userdata.email}>email</a>
+          <a href={props.userdata.blog}>blog</a>
         </div>
 }
 
+
 function renderNow () {
-  ReactDOM.render(App(myOBJ), document.getElementById('root'));
+  console.log(appState);
+  ReactDOM.render(App(appState), document.getElementById('root'));
 }
