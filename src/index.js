@@ -64,6 +64,13 @@ function Body (props) {
         </div>
 }
 
+function pressEnterFn (key) {
+    if (key.charCode === 13) {
+      searchInput(key)
+      clickSearchBtn()
+   }
+ }
+
 function searchInput (evt) {
   appState.user = evt.target.value
 }
@@ -76,17 +83,18 @@ function SearchUser (props) {
   return (
     <div className="search">
       Username
-      <input className="user-input" type="text"  onChange={searchInput} name="username" />
+      <input className="user-input" type="text" onChange={searchInput} onKeyPress={ pressEnterFn } name="username" />
       <button onClick={clickSearchBtn}>Search</button>
     </div>
   )
 }
 
 function Footer (props) {
+  console.log(props.userdata.url)
   return <div className="footer">
-          <a href={props.userdata.url}>github</a>
-          <a href={props.userdata.email}>email</a>
-          <a href={props.userdata.blog}>blog</a>
+          <a href={props.userdata.html_url}>Github</a>
+          <a href={props.userdata.blog}>Blog</a>
+          <a href={props.userdata.email}>{props.userdata.email}</a>
         </div>
 }
 
