@@ -4,7 +4,7 @@ import './index.css';
 import './App.css';
 import token from './_token.js'
 
-function gitHubInfo (user) {
+function fetchGitHubInfo (user) {
   const githubToken = 'access_token='+ token
   const githubUrl = 'https://api.github.com/users/'
   const userName = user
@@ -33,7 +33,7 @@ function gitHubInfo (user) {
   request.send();
 }
 
-gitHubInfo('asharnaud')
+fetchGitHubInfo('asharnaud')
 
 const initialState = {
   isLoading: true,
@@ -63,6 +63,7 @@ function Body (props) {
   if (props.userData === null) {
     return (
       <div className='body'>
+        <h1 className="feature-heading">USER NOT FOUND</h1>
         <img className="error-img" src='https://cdn.meme.am/cache/instances/folder204/500x/78118204/stop-like-man-dont-freak-out-just-reload-try-another-user.jpg'alt="error meme"/>
       </div>
     )
@@ -81,8 +82,8 @@ function Body (props) {
 
 function pressEnterFn (key) {
     if (key.charCode === 13) {
-      searchInput(key)
       clickSearchBtn()
+      searchInput(key)
    }
  }
 
@@ -91,7 +92,7 @@ function searchInput (evt) {
 }
 
 function clickSearchBtn () {
-  gitHubInfo(appState.user)
+  fetchGitHubInfo(appState.user)
 }
 
 function SearchUser (props) {
@@ -109,7 +110,7 @@ function Footer (props) {
   return <div className="footer">
           <a href={props.userdata.html_url}>Github</a>
           <a href={props.userdata.blog}>Blog</a>
-          <a href={props.userdata.email}>{props.userdata.email}</a>
+          <a href={'mailto:' + props.userdata.email}>{props.userdata.email}</a>
         </div>
 }
 
