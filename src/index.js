@@ -16,6 +16,7 @@ function fetchGitHubInfo (user) {
     if (request.status >= 200 && request.status < 400) {
       appState.userdata = JSON.parse(request.responseText);
       appState.user = user
+      appState.user = ''
     } else {
       appState.userdata = null
     }
@@ -114,9 +115,9 @@ function SearchUser (searchTxt) {
         Username
       </label>
       <input className="user-input"
-             type="text"
              onChange={onChangeSearchInput}
              onKeyPress={onKeyPressSearchInput}
+             type="text"
              value={searchTxt} />
       <button onClick={clickSearchBtn}>Search</button>
     </div>
@@ -125,7 +126,7 @@ function SearchUser (searchTxt) {
 
 function Footer (userdata) {
   if (userdata === null) {
-    return 
+    return
   }
   return <div className="footer">
           <a href={userdata.html_url}>Github</a>
