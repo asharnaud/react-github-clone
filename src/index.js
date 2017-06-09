@@ -4,38 +4,46 @@ import './index.css';
 import './App.css';
 import token from './_token.js'
 
-function fetchGitHubInfo (user) {
-  const githubToken = 'access_token='+ token
-  const githubUrl = 'https://api.github.com/users/'
-  const username = user
-  const fullUrl = githubUrl + username + '?' + githubToken
-  let request = new XMLHttpRequest();
-  request.open('GET', fullUrl, true);
-
-  request.onload = function() {
-    if (request.status >= 200 && request.status < 400) {
-      appState.userdata = JSON.parse(request.responseText);
-      appState.user = user
-      appState.user = ''
-    } else {
-      appState.userdata = null
-    }
-  }
-
-  request.onerror = function() {
-    appState.userdata = null
-  };
-  request.send()
-}
-
-fetchGitHubInfo('asharnaud')
-
 const initialState = {
   userdata: {},
   user: ''
 }
 
 let appState = initialState
+
+function fetchGitHubInfo (user) {
+  if (user === '') {
+    return
+  }
+  const githubToken = encodeURIComponent('access_token='+ token)
+  const githubUrl = 'https://api.github.com/users/'
+  const username = user
+  const fullUrl = githubUrl + username + '?' + githubToken
+  let request = new XMLHttpRequest()
+  request.open('GET', fullUrl, true)
+    request.onload = function validateJson(jsonData) {
+      jsonData = request.responseText
+      if (request.status >= 200 && request.status < 400) {
+      try {
+        appState.userdata = JSON.parse(jsonData)
+      }
+      catch(error) {
+        console.log("Error in the data")
+        console.log(error)
+        appState.userdata = null
+        appState.user = null
+
+      }
+    } else {
+        appState.userdata = null
+        appState.user = null
+      }
+  }
+  request.send()
+}
+
+fetchGitHubInfo('asharnaud')
+appState.user = ''
 
 function App (props) {
   return (
@@ -49,31 +57,24 @@ function App (props) {
 
 function Header () {
   return <div className="header">
-          <p> <img src="http://octodex.github.com/images/stormtroopocat.png" alt="octocat"></img>Github Clone</p>
+          <p> <img src="http://octodex.github.com/images/stormtroopocat.png" alt="octocat"/>Github Clone</p>
         </div>
 }
 
 const NOT_FOUND_IMG_SRC = "https://cdn.meme.am/cache/instances/folder204/500x/78118204/stop-like-man-dont-freak-out-just-reload-try-another-user.jpg"
 
 function Body (props) {
-  if (props.userdata === null) {
-  return (
-      <div>
-        {ErrorMessage(props)}
-      </div>
-    )
+  if (props.userdata) {
+  return MainText(props)
   } else {
-      return (
-        <div>
-          {MainText(props)}
-        </div>
-      )}
+    return ErrorMessage()
+  }
 }
 
 function MainText (props) {
   return (
     <div className="body">
-      <img className="img-circle" src={props.userdata.avatar_url} alt="user profile"></img>
+      <img className="img-circle" src={props.userdata.avatar_url} alt="user profile" />
         <div className="body-wrapper">
           <h2 className="feature-heading">{props.userdata.name}</h2>
             <p className="feature-paragraph">{props.userdata.location}</p>
@@ -85,11 +86,11 @@ function MainText (props) {
   )
 }
 
-function ErrorMessage (userdata) {
+function ErrorMessage () {
     return (
       <div className='body'>
         <h1 className="feature-heading">USER NOT FOUND</h1>
-        <img className="error-img" src={NOT_FOUND_IMG_SRC} alt="error meme"></img>
+        <img className="error-img" src={NOT_FOUND_IMG_SRC} alt="error meme" />
       </div>
     )
 }
@@ -129,8 +130,8 @@ function Footer (userdata) {
     return
   }
   return <div className="footer">
-          <a href={userdata.html_url}>Github</a>
-          <a href={userdata.blog}>Blog</a>
+          <a href={userdata.html_url} target="_blank">Github</a>
+          <a href={userdata.blog} target="_blank">Blog</a>
           <a href={'mailto:' + userdata.email}>{userdata.email}</a>
         </div>
 }
